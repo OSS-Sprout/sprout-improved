@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-paper text-ink antialiased font-sans; }
+  ::selection { @apply bg-brand-200 text-brand-900; }
+}
+
+@layer utilities {
+  .lift { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+  .lift:hover { transform: translateY(-5px); }
+  .img-fade { opacity: 0; transition: opacity .7s ease; }
+  .img-fade.on { opacity: 1; }
+}
