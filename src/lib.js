@@ -1,18 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { SEED_PLANTS } from "./data.js";
-
-export const uid = (p = "pl") => p + Date.now().toString(36) + Math.floor(Math.random() * 1000);
-
-const KEY = "sprout_plants_v1";
-const SEEDED = "sprout_seeded_v1";
-const read = (fb) => { try { return JSON.parse(localStorage.getItem(KEY)) ?? fb; } catch { return fb; } };
-export const loadPlants = () => read(SEED_PLANTS);
-export const savePlants = (p) => { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* */ } };
-export function seedIfEmpty() {
-  if (localStorage.getItem(SEEDED)) return;
-  savePlants(SEED_PLANTS);
-  localStorage.setItem(SEEDED, "1");
-}
 
 export const img = (kw, seed, w = 800, h = 600) => `https://loremflickr.com/${w}/${h}/${kw}?lock=${seed}`;
 
