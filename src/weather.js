@@ -34,6 +34,34 @@ export async function fetchWeather(coords = COORDINATES) {
         if (!response.ok) throw new Error("HTTP Error");
         const datas = await response.json();
 
+        // 필요한 날씨 데이터 추출하여 객체로 구조화
+        const weatherData = {
+            current: {
+              temp: datas.current?.temperature_2m ?? null,
+              dewPoint: datas.current?.dew_point_2m ?? null,
+              humidity: datas.current?.relative_humidity_2m ?? null,
+              weatherCode: datas.current?.weather_code ?? null,
+            },
+            today: {
+              rainSum: datas.daily?.precipitation_sum?.[0] ?? 0,
+              rainProb: datas.daily?.precipitation_probability_max?.[0] ?? 0,
+              maxTemp: datas.daily?.temperature_2m_max?.[0] ?? null,
+              minTemp: datas.daily?.temperature_2m_min?.[0] ?? null,
+              radiation: datas.daily?.shortwave_radiation_sum?.[0] ?? null,
+              et0: datas.daily?.et0_fao_evapotranspiration?.[0] ?? null,
+              windMax: datas.daily?.wind_speed_10m_max?.[0] ?? null,
+            },
+            tomorrow: {
+              rainSum: datas.daily?.precipitation_sum?.[1] ?? 0,
+              rainProb: datas.daily?.precipitation_probability_max?.[1] ?? 0,
+              maxTemp: datas.daily?.temperature_2m_max?.[1] ?? null,
+              minTemp: datas.daily?.temperature_2m_min?.[1] ?? null,
+              radiation: datas.daily?.shortwave_radiation_sum?.[1] ?? null,
+              et0: datas.daily?.et0_fao_evapotranspiration?.[1] ?? null,
+              windMax: datas.daily?.wind_speed_10m_max?.[1] ?? null,
+            },
+          };
+
         localStorage.setItem(
             cacheKey,
             JSON.stringify({
@@ -41,9 +69,9 @@ export async function fetchWeather(coords = COORDINATES) {
                 data: datas
             })
         );
-        return datas;
+        return weatherData;
     } catch(error) {
         console.warn("날씨 데이터 불러오기를 실패했습니다");
-        return null; // 날씨를 못  받아오면 원래 주기로 작동함
+        return null; // 날씨를 못 받아오면 원래 주기로 작동함
     }
 }
